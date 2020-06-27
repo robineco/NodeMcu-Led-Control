@@ -1,6 +1,8 @@
 # NodeMcu-Led-Control
 NodeMcu webinterface to control a led ring.
+
 You can choose different animations and colors.
+
 Furthermore, you can adjust the brightness, speed and number of lit LEDs
 
 ## Webinterface
@@ -11,6 +13,12 @@ Furthermore, you can adjust the brightness, speed and number of lit LEDs
 ### Colors
 ![Color Select](https://raw.githubusercontent.com/robineco/NodeMcu-Led-Control/master/images/colors.png)
 
+
+## Todos
+- Fade Animation
+- Speed Control
+- Colorpicker
+- Connect all to a SmartHome Hub
 
 ## Build With
 
