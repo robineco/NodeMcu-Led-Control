@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Color Control</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+</head>
+<body>
+
+    <script>
+        function restart() {
+            $.ajax({
+                url: './restart',
+                type: 'GET',
+                success: function() {
+                    M.toast({html: 'Restarting ESP...'});
+                }
+            });
+        }
+    </script>
+
+    <script>
+        function send(action) {
+            $.ajax({
+                url: './actions/' + action,
+                type: 'GET',
+                success: function() {
+
+                    switch(action) {
+                        case 0:
+                        M.toast({html: 'Turned Leds off'});
+                        break;
+                        case 1:
+                        M.toast({html: 'Spinning Mode Activated'});
+                        break;
+                        case 2:
+                        M.toast({html: 'Just One Color'});
+                        break;
+                        case 4:
+                        M.toast({html: 'Rainbow Mode Activated'});
+                        break;
+                    } 
+                }
+            });
+        }
+    </script>
+
+    <script>
+        function leds() {
+            obj = new Object();
+            obj.number = document.getElementById('numberOfLeds').value;
+
+            $.ajax({
+                type: 'POST',
+                url: './leds',
+                data: JSON.stringify(obj),
+                contentType: "",
+                dataType: 'json',
+                success: function() {
+                    M.toast({html: 'Updated Leds'});
+                }
+            })
+        }
+    </script>
+
+    <script>
+        function brightness() {
+            obj = new Object();
+            obj.brightness = document.getElementById('brightness').value;
+
+            $.ajax({
+                type: "POST",
+                url: './brightness',
+                data: JSON.stringify(obj),
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                success: function() {
+                    M.toast({html: 'Updated Brightness'});
+                }
+            });
+        }
+    </script>
+
+    <script>
+        function changeColor(red, green, blue) {
+            obj = new Object();
+            obj.red = red;
+            obj.green = green;
+            obj.blue = blue;
+            
+            $.ajax({
+                type: "POST",
+                url: './color',
+                data: JSON.stringify(obj),
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                success: function() {
+                    M.toast({html: 'Updated Color'});yellow
+                }
+            });
+        }
+    </script>
+
+    <div class="card-panel lighten-2" style="text-align: center; background-color: #ee6e73;">
+        <h4 class="light" style="color: white;">Led Control Panel</h4>
+    </div>
+ 
+	<div class="container">
+
+        <div class="row">
+            <div class="col s12 m3">
+                <h5 class="light">Turn On/Off:</h5>
+            </div>
+            <div class="col s12 m3">
+                <button class="btn-large waves-effect waves-red" onclick="send(0)" name="action" style="width: 100%; margin: 5px 0 5px 0;" >Turn Off</button>
+            </div>
+            <div class="col s12 m3">
+                <button class="btn-large waves-effect waves-green" onclick="send(2)" name="action" style="width: 100%; margin: 5px 0 5px 0;">Trun On</button>
+            </div>
+            <div class="col s12 m3">
+                <button class="btn-large waves-effect waves-green" onclick="restart()" name="action" style="width: 100%; margin: 5px 0 5px 0;">Restart</button>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col s12 m3">
+                <h5 class="light">Animations:</h5>
+            </div>
+            <div class="col s12 m3">
+                <button class="btn-large waves-effect waves-green" onclick="send(1)" name="action" style="width: 100%; margin: 5px 0 5px 0;">Spin
+                    <i class="material-icons right">data_usage</i>
+                </button>
+            </div>
+            <div class="col s12 m3">
+                <button class="btn-large waves-effect waves-green" onclick="" name="action" style="width: 100%; margin: 5px 0 5px 0;">Fade
+                    <i class="material-icons right">wb_incandescent</i>
+                  </button>
+            </div>
+            <div class="col s12 m3">
+                <button class="btn-large waves-effect waves-green" onclick="send(4)" name="action" style="width: 100%; margin: 5px 0 5px 0;">Rainbow
+                    <i class="material-icons right">flare</i>
+                  </button>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col s12 m3">
+                <h5 class="light">Brightness:</h5>
+            </div>
+            <div class="col s12 m7">
+                <form action="#">
+                    <p class="range-field">
+                      <input id="brightness" type="range" name="points" min="0" max="255"><span class="thumb"><span class="value"></span></span>
+                    </p>
+                </form>
+            </div>
+            <div class="col s12 m2">
+                <button class="btn waves-effect waves-green" onclick="brightness()" name="action" style="margin-top: 20px;width: 100%;">Change
+                    <i class="material-icons right">check</i>
+                  </button>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col s12 m3">
+                <h5 class="light">Speed:</h5>
+            </div>
+            <div class="col s12 m7">
+                <form action="#">
+                    <p class="range-field">
+                      <input id="speed" type="range" name="points" min="1" max="100"><span class="thumb"><span class="value"></span></span>
+                    </p>
+                </form>
+            </div>
+            <div class="col s12 m2">
+                <button class="btn waves-effect waves-green" onclick="speed()" name="action" style="margin-top: 20px;width: 100%;">Change
+                    <i class="material-icons right">check</i>
+                  </button>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col s12 m3">
+                <h5 class="light">Number of Leds:</h5>
+            </div>
+            <div class="col s12 m7">
+                <form action="#">
+                    <p class="range-field">
+                      <input id="numberOfLeds" type="range" name="points" value="10" min="1" max="60"><span class="thumb"><span class="value"></span></span>
+                    </p>
+                </form>
+            </div>
+            <div class="col s12 m2">
+                <button class="btn waves-effect waves-green" onclick="leds()" name="action" style="margin-top: 20px;width: 100%;">Change
+                    <i class="material-icons right">check</i>
+                  </button>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col s12">
+                <h4 class="light center-align">Colors</h4>
+            </div>
+            <div class="col s12 m4">
+                <div class="collection">
+                    <a href="#!" onclick="changeColor(255, 0, 0)" class="collection-item red darken-1" style="color: white;">Red</a>
+                    <a href="#!" onclick="changeColor(0, 255, 0)" class="collection-item green darken-2" style="color: white;">Green</a>
+                    <a href="#!" onclick="changeColor(0, 0, 255)" class="collection-item blue darken-2" style="color: white;">Blue</a>
+                    <a href="#!" onclick="changeColor(255, 255, 0)" class="collection-item yellow darken-2" style="color: white;">Yellow</a>
+                </div>
+            </div>
+            <div class="col s12 m4">
+                <div class="collection">
+                    <a href="#!" onclick="changeColor(255, 165, 0)" class="collection-item orange darken-2" style="color: white;">Orange</a>
+                    <a href="#!" onclick="changeColor(210, 180, 140)" class="collection-item brown darken-2" style="color: white;">Brown</a>
+                    <a href="#!" onclick="changeColor(0, 255, 255)" class="collection-item cyan darken-2" style="color: white;">Cyan</a>
+                    <a href="#!" onclick="changeColor(255, 255, 255)" class="collection-item darken-2">White</a>
+                </div>
+            </div>
+            <div class="col s12 m4">
+                <div class="collection">
+                    <a href="#!" onclick="changeColor(255, 215, 0)" class="collection-item darken-2" style="color: white; background-color: rgb(255, 215, 0);">Gold</a>
+                    <a href="#!" onclick="changeColor(210, 105, 30)" class="collection-item darken-2" style="color: white; background-color: rgb(210, 105, 30);">Chocolate</a>
+                    <a href="#!" onclick="changeColor(0, 191, 255)" class="collection-item darken-2" style="color: white; background-color: rgb(0, 191, 255);">Deep-Sky-Blue</a>
+                    <a href="#!" onclick="changeColor(245, 245, 220)" class="collection-item darken-2" style="background-color: rgb(245, 245, 220);">Beige</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <footer class="page-footer" style="margin-top: 50px;">
+        <div class="container">
+          <div class="row">
+            <div class="col l6 s12">
+              <h5 class="white-text">NodeMCU Color Contol Panel</h5>
+              <p class="grey-text text-lighten-4">Just a simple Color Control Panel for the NodeMcu</p>
+            </div>
+            <div class="col l4 offset-l2 s12">
+              <h5 class="white-text">Links</h5>
+              <ul>
+                <li><a class="grey-text text-lighten-3" href="https://github.com/robineco">Github</a></li>
+                <li><a class="grey-text text-lighten-3" href="https://materializecss.com/">Materializecss</a></li>
+
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="footer-copyright">
+            <div class="container center-align">
+                🔥 Made By robineco 🔥
+            </div>
+        </div>
+      </footer>
+    
+    <script type="text/javascript" src="range.js"></script>
+	  
+</body>
+</html>
